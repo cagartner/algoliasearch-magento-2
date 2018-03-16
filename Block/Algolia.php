@@ -147,6 +147,12 @@ class Algolia extends Template implements CollectionDataSourceInterface
         return $this->registry->registry('current_category');
     }
 
+    /** @return \Magento\Catalog\Model\Product */
+    public function getCurrentProduct()
+    {
+        return $this->registry->registry('product');
+    }
+
     public function getAddToCartParams()
     {
         $url = $this->getAddToCartUrl();

@@ -62,7 +62,7 @@ $origFormatedVar = 'price' . $priceKey . '_original_formated';
                             <input type="hidden" name="product" value="{{objectID}}">
                             <input type="hidden" name="uenc" value="{{ addToCart.uenc }}">
                             <input name="form_key" type="hidden" value="{{ addToCart.formKey }}">
-                            <button type="submit" title="Add to Cart" class="action tocart primary">
+                            <button type="submit" title="Add to Cart" class="action tocart primary" data-objectid="{{objectID}}" data-position="{{__position}}">
                                 <span>Add to Cart</span>
                             </button>
                         </form>

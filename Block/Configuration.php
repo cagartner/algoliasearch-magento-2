@@ -92,6 +92,11 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             }
         }
 
+        $productId = null;
+        if ($config->isClickConversionAnalyticsEnabled() && $request->getControllerName() === 'product') {
+            $productId = $this->getCurrentProduct()->getId();
+        }
+
         /**
          * Handle search
          */
@@ -154,6 +159,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             'isSearchPage' => $this->isSearchPage(),
             'isCategoryPage' => $isCategoryPage,
             'removeBranding' => (bool) $config->isRemoveBranding(),
+            'productId' => $productId,
             'priceKey' => $priceKey,
             'currencyCode' => $currencyCode,
             'currencySymbol' => $currencySymbol,
