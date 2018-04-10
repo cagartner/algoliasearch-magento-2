@@ -1,6 +1,5 @@
 requirejs(['algoliaBundle', 'algoliaAnalytics'], function(algoliaBundle, algoliaAnalytics) {
-	var clickedObjectIds = [];
-	var convertedObjectIds = [];
+	var objectIdsStorageKey = 'algoliasearch_analytics_ids';
 	
 	algoliaBundle.$(function ($) {
 		algoliaAnalytics.init({
@@ -8,6 +7,7 @@ requirejs(['algoliaBundle', 'algoliaAnalytics'], function(algoliaBundle, algolia
 			apiKey: algoliaConfig.apiKey
 		});
 		
+		// "Click" in autocomplete
 		$(algoliaConfig.autocomplete.selector).each(function () {
 			$(this).on('autocomplete:selected', function (e, suggestion) {
 				algoliaAnalytics.click({
@@ -18,26 +18,23 @@ requirejs(['algoliaBundle', 'algoliaAnalytics'], function(algoliaBundle, algolia
 			});
 		});
 		
-		// "Click" in list
+		// "Click" on instant search page
 		$(document).on('click', algoliaConfig.ccAnalytics.ISSelector, function() {
 			var $this = $(this);
 			
 			trackClick($this.data('objectid'), $this.data('position'));
 		});
 		
-		// "Add to cart" in list
-		$(document).on('click', '.action.tocart.primary', function() {
-			var objectId = $(this).data('objectid');
-			
-			setTimeout(function() {
-				trackConversion(objectId);
-			}, 0);
-		});
 		
-		// "Add to cart" in detail
-		$(document).on('click', '#product-addtocart-button', function () {
-			trackConversion(algoliaConfig.productId);
-		});
+		if (algoliaConfig.ccAnalytics.conversionAnalyticsEnabled) {
+			$(document).on('click', algoliaConfig.ccAnalytics.addToCartSelector, function () {
+				var objectId = $(this).data('objectid') || algoliaConfig.productId;
+				
+				setTimeout(function () {
+					trackConversion(objectId);
+				}, 0);
+			});
+		}
 	});
 	
 	algolia.registerHook('beforeInstantsearchInit', function (instantsearchOptions) {
@@ -61,6 +58,7 @@ requirejs(['algoliaBundle', 'algoliaAnalytics'], function(algoliaBundle, algolia
 	function trackClick(objectID, position) {
 		objectID = objectID.toString();
 		
+		var clickedObjectIds = getObjectIds('clicked');
 		if (!clickedObjectIds[objectID]) {
 			algoliaAnalytics.click({
 				objectID: objectID.toString(),
@@ -68,20 +66,45 @@ requirejs(['algoliaBundle', 'algoliaAnalytics'], function(algoliaBundle, algolia
 			});
 			
 			clickedObjectIds[objectID] = 1;
+			
+			var convertedObjectIds = getObjectIds('converted');
 			delete convertedObjectIds[objectID];
+			
+			setObjectIds('clicked', clickedObjectIds);
+			setObjectIds('converted', convertedObjectIds);
 		}
 	}
 	
 	function trackConversion(objectID) {
 		objectID = objectID.toString();
 		
+		var convertedObjectIds = getObjectIds('converted');
 		if (!convertedObjectIds[objectID]) {
 			algoliaAnalytics.conversion({
 				objectID: objectID
 			});
 			
 			convertedObjectIds[objectID] = 1;
+			
+			var clickedObjectIds = getObjectIds('clicked');
 			delete clickedObjectIds[objectID];
+			
+			setObjectIds('clicked', clickedObjectIds);
+			setObjectIds('converted', convertedObjectIds);
 		}
+	}
+	
+	function getObjectIds(type) {
+		var objectIds = localStorage.getItem(objectIdsStorageKey + '_' + type);
+		
+		if (!objectIds) {
+			return [];
+		}
+		
+		return JSON.parse(objectIds);
+	}
+	
+	function setObjectIds(type, objectIds) {
+		localStorage.setItem(objectIdsStorageKey + '_' + type, JSON.stringify(objectIds));
 	}
 });

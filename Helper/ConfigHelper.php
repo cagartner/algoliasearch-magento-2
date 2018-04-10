@@ -70,6 +70,8 @@ class ConfigHelper
 
     const CC_ANALYTICS_ENABLE = 'algoliasearch_cc_analytics/cc_analytics_group/enable';
     const CC_ANALYTICS_IS_SELECTOR = 'algoliasearch_cc_analytics/cc_analytics_group/is_selector';
+    const CC_CONVERSION_ANALYTICS_ENABLE = 'algoliasearch_cc_analytics/cc_analytics_group/enable_conversion_analytics';
+    const CC_ADD_TO_CART_SELECTOR = 'algoliasearch_cc_analytics/cc_analytics_group/add_to_cart_selector';
 
     const GA_ENABLE = 'algoliasearch_analytics/analytics_group/enable';
     const GA_DELAY = 'algoliasearch_analytics/analytics_group/delay';
@@ -853,6 +855,20 @@ class ConfigHelper
     public function getClickConversionAnalyticsISSelector($storeId = null)
     {
         return $this->configInterface->getValue(self::CC_ANALYTICS_IS_SELECTOR, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    public function isConversionAnalyticsEnabled($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(
+            self::CC_CONVERSION_ANALYTICS_ENABLE,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    public function getConversionAnalyticsAddToCartSelector($storeId = null)
+    {
+        return $this->configInterface->getValue(self::CC_ADD_TO_CART_SELECTOR, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     public function isAnalyticsEnabled($storeId = null)

@@ -669,11 +669,11 @@
             </group>
         </section>
         <section id="algoliasearch_cc_analytics" translate="label" type="text" sortOrder="69" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Click Analytics</label>
+            <label><![CDATA[Click & Conversion Analytics]]></label>
             <tab>algolia</tab>
             <resource>Algolia_AlgoliaSearch::algolia_algoliasearch</resource>
             <group id="cc_analytics_group" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Click Analytics</label>
+                <label><![CDATA[Click & Conversion Analytics]]></label>
                 <comment>
                     <![CDATA[
                         Click analytics can be tracked only when you're on Business or a higher Algolia plan.
@@ -699,6 +699,31 @@
                         <field id="enable">1</field>
                     </depends>
                 </field>
+                <field id="enable_conversion_analytics" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Conversion Analytics</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            Conversion is tracked when the product was found and clicked in search results and then added to cart.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+                <field id="add_to_cart_selector" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>DOM selector of a "Add to Cart" buttons</label>
+                    <comment>
+                        <![CDATA[
+                            The element has to contain attribute "data-objectid" or a "productId" variable needs to be specified in "frontend" algoliaConfig variable.
+                            <br /><br />
+                            More selectors separate by a comma (,).
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="enable_conversion_analytics">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
         <section id="algoliasearch_analytics" translate="label" type="text" sortOrder="69" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -708,7 +733,7 @@
             <group id="analytics_group" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Google Analytics</label>
                 <comment>
-                    <![CDATA[
+                   <![CDATA[
                         Documentation of Magento Google analytics: <a href="https://community.algolia.com/magento/doc/m2/analytics/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link" target="_blank">https://community.algolia.com/magento/doc/m2/analytics/</a>
                         <br>
                         <br>

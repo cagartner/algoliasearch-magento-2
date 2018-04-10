@@ -182,6 +182,8 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             ],
             'ccAnalytics' => [
                 'ISSelector' => $config->getClickConversionAnalyticsISSelector(),
+                'conversionAnalyticsEnabled' => $config->isConversionAnalyticsEnabled(),
+                'addToCartSelector' => $config->getConversionAnalyticsAddToCartSelector(),
             ],
             'analytics' => $config->getAnalyticsConfig(),
             'translations' => [
