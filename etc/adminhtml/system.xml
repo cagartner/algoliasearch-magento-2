@@ -699,9 +699,9 @@
                         <field id="enable">1</field>
                     </depends>
                 </field>
-                <field id="enable_conversion_analytics" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Conversion Analytics</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                <field id="conversion_analytics_mode" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Conversion Analytics mode</label>
+                    <source_model>Algolia\AlgoliaSearch\Model\Source\ConversionAnalyticsMode</source_model>
                     <comment>
                         <![CDATA[
                             Conversion is tracked when the product was found and clicked in search results and then added to cart.
@@ -721,7 +721,18 @@
                         ]]>
                     </comment>
                     <depends>
-                        <field id="enable_conversion_analytics">1</field>
+                        <field id="conversion_analytics_mode">add_to_cart</field>
+                    </depends>
+                </field>
+                <field id="place_order_selector" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>DOM selector of a "Place Order" button</label>
+                    <comment>
+                        <![CDATA[
+                            More selectors separate by a comma (,).
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="conversion_analytics_mode">place_order</field>
                     </depends>
                 </field>
             </group>
